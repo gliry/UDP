@@ -57,7 +57,6 @@ int main() {
     printf("Start receive\n");
     FILE* fp_2;
     fp_2 = fopen("/home/pi/Desktop/text.txt", "w");
-	printf("opened\n");
     int k = 0;
     for (int i = 0; i < 10240; ++i)
     {
@@ -91,31 +90,26 @@ for (int i = 0; i < 1024; ++i)
 	fprintf(fp_2, "%.20f + %.20fi\n", creal(data[ii]), cimag(data[ii])); 
     }
 }
-FILE* fp_3;
-fp_3 = fopen("/home/pi/Desktop/text_2.txt", "w");
+
 for (int i = 0; i < 1024; ++i)
 {
     for (int j = 0; j < 320; ++j)
     {
-	ii = (1024 * j + i);
-	send_data[ii*2] = creal(data[ii]);
-	send_data[ii*2 + 1] = cimag(data[ii]);
-	fprintf(fp_3, "i = %d  j = %d  ", i, j);
-	fprintf(fp_3, "% .20f + %.20fi\n", send_data[ii], send_data[ii+1]);
+	ii = 1024 * j + i;
+	memcpy(send_data_double, data
+        send_data.append(data[ii].real());
+	send_data.append(data[ii].imag());
     }
 }
-int v = 0;
-int h = 0;
+
 for (int i = 0; i < 10240; ++i)
 {
     // Здесь поделить на 10240 частей и sendto
-    memcpy(send_data_double, send_data + (h * 64), 32 * 2 * sizeof(double));
-    v = sendto(sockfd, send_data_double, 32 * 2 * sizeof(double), 0, (struct sockaddr *) &cliaddr, len);
-    ++h;
-    printf("%d  Sended:  %d\n", i, v);
-
 }
-    printf("Sended\n"); 
+    sendto(sockfd, (const char *)hello, strlen(hello), 
+        MSG_CONFIRM, (const struct sockaddr *) &cliaddr,
+            len);
+    printf("Hello message sent.\n"); 
       
     return 0;
 }
